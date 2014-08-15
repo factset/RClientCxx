@@ -23,6 +23,11 @@
 #define RCLIENT_API
 #endif
 
+namespace rclient{
+  // Whether or not to include attributes when sending and parsing entries from RServe
+  const bool IncludeAttributes = true;
+}
+
 // RClient's vector type
 #include <vector>
 #define RVECTORTYPE std::vector
@@ -31,12 +36,14 @@
 #include <string>
 typedef std::string RSTRINGTYPE;
 
-// Shared Pointer and make_shared
+// Shared Pointer
 #include <boost/shared_ptr.hpp>
 #define RSHARED_PTR boost::shared_ptr
 
 #include <boost/make_shared.hpp>
 #define RMAKE_SHARED boost::make_shared
+
+#define RPTR_CAST boost::dynamic_pointer_cast
 
 
 // typedef addrinfo to compile on both VMS and Linux

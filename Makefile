@@ -21,6 +21,7 @@
 
 CXX=g++
 CXXFLAGS=-Wall -Werror $(if $(DEBUG),-O0 -g,-O1)
+LDFLAGS=-lcrypt
 
 RCLIENT=	endian_converter.cpp \
 		network_error.cpp \
@@ -30,7 +31,9 @@ RCLIENT=	endian_converter.cpp \
 		rexp.cpp \
 		rexp_double.cpp \
 		rexp_integer.cpp \
+		rexp_list.cpp \
 		rexp_null.cpp \
+		rexp_pairlist.cpp \
 		rexp_string.cpp \
 		rexp_vector.cpp \
 		rpacket.cpp \
@@ -44,8 +47,8 @@ OBJECTS= $(RCLIENT:.cpp=.o)
 all: $(EXECUTABLE)
 
 $(EXECUTABLE):  $(OBJECTS) $(DEMO)
-	$(CXX) $(DEMO) $(OBJECTS) -o $@
+	$(CXX) $(LDFLAGS) $(DEMO) $(OBJECTS) -o $@
 
 .PHONY : clean
 clean:
-	$(RM) $(DEMO) $(OBJECTS) $(EXECUTABLE) *~
+	$(RM) $(DEMO) $(OBJECTS) $(EXECUTABLE)

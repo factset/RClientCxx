@@ -18,8 +18,10 @@
 #define RCLIENT_REXP_CLASS_HIERARCHY_INCLUDED
 
 #include "rexp_double.h"
-#include "rexp_null.h"
-#include "rexp_string.h"
 #include "rexp_integer.h"
+#include "rexp_null.h"
+#include "rexp_list.h"
+#include "rexp_pairlist.h"
+#include "rexp_string.h"
 
 #endif

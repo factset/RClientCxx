@@ -75,7 +75,14 @@ namespace rclient{
       CMD_OCcall   = 0x00f
     };
 
-    // enum corresponding to status codes of errors sent in command response from server
+    /* enum corresponding to status codes of errors sent in command response from server.
+       
+       stat codes; 0-0x3f are reserved for program specific codes - e.g. for R
+       connection they correspond to the stat of Parse command.
+       the following codes are returned by the Rserv itself
+       
+       codes <0 denote Rerror as provided by R_tryEval
+    */
     enum eStat {
       ERR_auth_failed    = 0x41, // authentication failed
       ERR_conn_broken    = 0x42, // connection closed or broken packet killed it
@@ -107,7 +114,6 @@ namespace rclient{
       ERR_unavailable    = 0x62, // feature is not present in this build
       ERR_cryptError     = 0x63, // crypto-system error
       ERR_securityClose  = 0x64  // server-initialized close due to security violation
-
     };
 
     // constructor for consumer
@@ -117,7 +123,7 @@ namespace rclient{
     RPacket(const QAP1Header &header, const RVECTORTYPE<PacketEntry> &entries);
 
     uint32_t getCommand() const;
-    uint32_t getStatus() const;
+    RSTRINGTYPE getStatus() const;
 
     // getters
     RSHARED_PTR<const RVECTORTYPE<PacketEntry> > getEntries() const;

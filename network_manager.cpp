@@ -28,7 +28,6 @@
 #include <string.h>
 #include <cerrno> // for errno
 
-
 // MSG_NOSIGNAL is not defined on VMS, so define it to be an empty flag
 #ifndef MSG_NOSIGNAL
 #define MSG_NOSIGNAL 0
@@ -147,7 +146,7 @@ namespace rclient{
       if(netStatus <= 0){
         // if netStatus is 0, then errno was not set. Assume connection was reset by peer
         if(netStatus == 0)
-          throw_network_error(std::string("Error occured while receiving: " + description), ECONNRESET);
+          throw_network_error(std::string("Error occured while trying to send: " + description), ECONNRESET);
         // error occured, try again if it was EINTR
         if(errno == EINTR) continue;
         // otherwise throw with errno
@@ -250,6 +249,71 @@ namespace rclient{
     }
     // connection succeeded, return version info
     return m_sRserve_version;
+  }
+
+
+  /** Checks RServe version information to determine if authentication is required
+   * If the client is not connected yet, then it will connect to retrieve Authentication type
+   * @return True if authentication is required, False otherwise
+   */
+  const bool NetworkManager::isAuthorizationRequired(){
+    if(m_iSock < 0){
+      // if not connected, try to establish connection
+      connect_to_rserve();
+    }
+    // start looking for authentication type at beginning of optional attributes
+    for(size_t i = 12; i < m_sRserve_version.size(); i += 4){
+      if(m_sRserve_version.c_str()[i] == 'A' &&
+         m_sRserve_version.c_str()[i+1] == 'R'){
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  /** Checks RServe version information to determine if the provided authentication version is supported
+   * If the client is not connected yet, then it will connect to retrieve Authentication type
+   * @param[in] has_type 2-character string for which authentication type is supported. "uc" for crypt. "pt" for plain text
+   * @return True if the provided authentication type is supported. False otherwise.
+   */
+  const bool NetworkManager::hasAuthorizationType(const RSTRINGTYPE &has_type){
+    if(m_iSock < 0){
+      // if not connected, try to establish connection
+      connect_to_rserve();
+    }
+    char type[3] = {'n', 'a', 0};
+    // start looking for authentication type at beginning of optional attributes
+    for(size_t i = 12; i < m_sRserve_version.size(); i += 4){
+      if(m_sRserve_version.c_str()[i] == 'A' &&
+         m_sRserve_version.c_str()[i+1] == 'R'){
+        memcpy(type, &m_sRserve_version.c_str()[i+2], 2);
+        if(RSTRINGTYPE(type) == has_type)
+          return true;
+      }
+    }
+    return false;
+  }
+  
+
+  /** Retrieves key for authentication (default being "rs")
+   * If the client is not connected yet, then it will connect to retrieve key
+   * @return String representing authentication key
+   */
+  const RSTRINGTYPE NetworkManager::getKey(){
+    if(m_iSock < 0){
+      // if not connected, try to establish connection
+      connect_to_rserve();
+    }
+    char key[3] = {'r', 's', 0};
+    // start looking for key at beginning of optional attributes
+    for(size_t i = 12; i < m_sRserve_version.size(); i += 4){
+      if(m_sRserve_version.c_str()[i] == 'K'){
+        memcpy(key, &m_sRserve_version.c_str()[i+1], 2);
+        break;
+      }
+    }
+    return RSTRINGTYPE(key);
   }
 
 

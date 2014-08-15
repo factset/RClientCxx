@@ -19,8 +19,17 @@
 namespace rclient{
 
   /** basic constructor sets REXP type to XT_VECTOR
+   * @param[in] type REXP type of subclass of REXPVector
+   * @param[in] size bytesize of REXP
    */
   REXPVector::REXPVector(const eType type, const size_t size):REXP(type, size){}
+
+
+  /** Constructor with attributes sets REXP type to XT_VECTOR
+   * @param[in] type REXP type of subclass of REXPVector
+   * @param[in] size bytesize of REXP
+   */
+  REXPVector::REXPVector(const RSHARED_PTR<const REXPPairList> &attr, const eType type, const size_t size):REXP(attr, type, size){}
 
   /** destructor
    */

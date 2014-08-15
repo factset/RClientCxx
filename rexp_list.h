@@ -1,4 +1,4 @@
-/*  REXP Null: R Object Representing NULL
+/*  REXP List: R Object Containing vector of REXP
  *  Copyright 2014 FactSet Research Systems Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,26 +14,37 @@
  *  limitations under the License.
  */
 
-#ifndef RCLIENT_REXP_NULL_H_INCLUDED
-#define RCLIENT_REXP_NULL_H_INCLUDED
+#ifndef RCLIENT_REXP_LIST_H_INCLUDED
+#define RCLIENT_REXP_LIST_H_INCLUDED
 
 #include "config.h"
-#include "rexp.h"
+#include "rexp_vector.h"
 
 namespace rclient{
-  /** R Object representing null
+
+  /** R vector of shared_ptr<REXP>
    */
-  class RCLIENT_API REXPNull : public REXP{
+  class RCLIENT_API REXPList : public REXPVector{
+
   public:
-    REXPNull();
-    REXPNull(const REXPNull &exp);
-    explicit REXPNull(const RSHARED_PTR<const REXPPairList> &attr);
+    typedef RVECTORTYPE<RSHARED_PTR<const REXP> > RVector;
+
+    REXPList();
+    ~REXPList();
+    REXPList(const REXPList &exp);
+    explicit REXPList(const RVector &content);
+    REXPList(const RVector &content, const RSHARED_PTR<const REXPPairList> &attr);
+
+    virtual const size_t length() const;
+    virtual const RVector& getData() const;
 
     // for network packet entries
     virtual bool toNetworkData(unsigned char *buf, const size_t &length) const;
     virtual size_t bytelength() const;
+
+  private:
+    RVector m_vecData;
   };
 
 } // close namespace
-
 #endif

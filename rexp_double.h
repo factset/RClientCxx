@@ -32,9 +32,13 @@ namespace rclient{
   public:
     REXPDouble();
     ~REXPDouble();
+    REXPDouble(const REXPDouble &exp);
     explicit REXPDouble(const double &val, const double &consumerNAValue = NA);
     explicit REXPDouble(const RVECTORTYPE<double> &vals, const double &consumerNAValue = NA);
     explicit REXPDouble(const RVECTORTYPE<float> &vals, const double &consumerNAValue = NA);
+
+    REXPDouble(const RVECTORTYPE<double> &vals, const RSHARED_PTR<const REXPPairList> &attr, const double &consumerNAValue = NA);
+    REXPDouble(const RVECTORTYPE<float> &vals, const RSHARED_PTR<const REXPPairList> &attr, const double &consumerNAValue = NA);
 
     virtual const size_t length() const;
     virtual bool isNA(const double &val);
@@ -45,7 +49,7 @@ namespace rclient{
     // for network packet entries
     // dont want consumer to have access to these, but needed by rpacket_entry
     // possible use of private + friend here
-    virtual bool toNetworkData(unsigned char *buf, size_t &length) const;
+    virtual bool toNetworkData(unsigned char *buf, const size_t &length) const;
     virtual size_t bytelength() const;
   
   private:

@@ -22,19 +22,33 @@ namespace rclient{
    */
   REXPNull::REXPNull():REXP(XT_NULL){}
 
+
+  /** Copy constructor.
+   * @param[in] exp REXPNull to copy data from
+   */
+  REXPNull::REXPNull(const REXPNull &exp):REXP(XT_NULL){
+    if(exp.hasAttributes())
+      REXP::setAttributes(exp.getAttributes());
+  }
+
+  /** constructor for REXPNull containing attributes
+   * @param[in] attr pointer to REXPPairList containing this REXP's attributes
+   */
+  REXPNull::REXPNull(const RSHARED_PTR<const REXPPairList> &attr):REXP(attr, XT_NULL){}
+
   /** fills in provided array with unsigned chars containing R contents to be used by the network
-   * since this represents null, there are no contents
+   * since this represents null, there are no contents except for attributes
    * @param[out] buf unsigned character array to hold network data
    * @param[in] length size of array
-   * @return true since there is no data to add
+   * @return true since there is no data
    */
-  bool REXPNull::toNetworkData(unsigned char *buf, size_t &length) const{
+  bool REXPNull::toNetworkData(unsigned char *buf, const size_t &length) const{
     return true;
   }
 
   /** returns number of bytes of the content that is sent over the network
    * used by RPacketEntry to create packet entry header
-   * @return 0, REXPNull has no data
+   * @return Zero as REXPNull has no data
    */
   size_t REXPNull::bytelength() const{
     return 0;

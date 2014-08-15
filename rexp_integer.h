@@ -32,8 +32,10 @@ namespace rclient{
   public:
     REXPInteger();
     ~REXPInteger();
+    REXPInteger(const REXPInteger &exp);
     explicit REXPInteger(const int32_t &val, const int32_t &consumerNAValue = NA);
     explicit REXPInteger(const RVECTORTYPE<int32_t> &vals, const int32_t &consumerNAValue = NA);
+    REXPInteger(const RVECTORTYPE<int32_t> &vals, const RSHARED_PTR<const REXPPairList> &attr, const int32_t &consumerNAValue = NA);
 
     virtual const size_t length() const;
     virtual bool isNA(const int32_t &val);
@@ -44,7 +46,7 @@ namespace rclient{
     // for network packet entries
     // dont want consumer to have access to these, but needed by rpacket_entry
     // possible use of private + friend here
-    virtual bool toNetworkData(unsigned char *buf, size_t &length) const;
+    virtual bool toNetworkData(unsigned char *buf, const size_t &length) const;
     virtual size_t bytelength() const;
   
   private:

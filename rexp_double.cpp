@@ -94,6 +94,14 @@ namespace rclient{
    */ 
   REXPDouble::~REXPDouble(){}
 
+  /** Copy constructor.
+   * @param[in] exp REXPDouble to copy data from
+   */
+  REXPDouble::REXPDouble(const REXPDouble &exp):REXPVector(XT_ARRAY_DOUBLE, exp.getData().size() * sizeof(double)), m_vecData(exp.getData()){
+    if(exp.hasAttributes())
+      REXP::setAttributes(exp.getAttributes());
+  }
+
   /** constructor takes 1 double and puts it into a vector of size 1
    * @param[in] val double value to populate m_vecData, REXPDouble's contents
    * @param[in] consumerNAValue NA representation for doubles used by the consumer
@@ -121,6 +129,26 @@ namespace rclient{
   REXPDouble::REXPDouble(const RVECTORTYPE<float> &vals, const double &consumerNAValue):REXPVector(XT_ARRAY_DOUBLE, vals.size()*sizeof(double)){
     initData(vals, consumerNAValue);
   }
+
+  /** constructor copies provided vector<double> into itself. Constructor for REXP with Attributes
+   * @param[in] vals vector<double> to copy into m_vecData, REXPDouble's contents
+   * @param[in] attr pointer to REXPPairList containing this REXP's attributes
+   * @param[in] consumerNAValue NA representation for doubles used by the consumer
+   */
+  REXPDouble::REXPDouble(const RVECTORTYPE<double> &vals, const RSHARED_PTR<const REXPPairList> &attr, const double &consumerNAValue):REXPVector(attr, XT_ARRAY_DOUBLE, vals.size()*sizeof(double)){
+    initData(vals, consumerNAValue);
+  }
+
+
+  /** constructor copies provided vector<float> into itself. Constructor for REXP with Attributes
+   * @param[in] vals vector<float> to copy into m_vecData, REXPDouble's contents
+   * @param[in] attr pointer to REXPPairList containing this REXP's attributes
+   * @param[in] consumerNAValue NA representation for doubles used by the consumer
+   */
+  REXPDouble::REXPDouble(const RVECTORTYPE<float> &vals, const RSHARED_PTR<const REXPPairList> &attr, const double &consumerNAValue):REXPVector(attr, XT_ARRAY_DOUBLE, vals.size()*sizeof(double)){
+    initData(vals, consumerNAValue);
+  }
+
 
   /** Retrieve the size of the m_vecData vector<double>
    * @return length of vector m_vecData
@@ -182,8 +210,9 @@ namespace rclient{
    * @param[in] length size of array
    * @return bool indicating if the network data fits in the provided array
    */
-  bool REXPDouble::toNetworkData(unsigned char *buf, size_t &length) const{
+  bool REXPDouble::toNetworkData(unsigned char *buf, const size_t &length) const{
     EndianConverter converter;
+
     for(size_t i = 0; i < m_vecData.size(); ++i){
       size_t buf_i = i*sizeof(double);
       if(buf_i+sizeof(double) > length) return false;

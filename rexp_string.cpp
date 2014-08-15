@@ -68,6 +68,14 @@ namespace rclient{
    */
   REXPString::~REXPString(){}
 
+  /** Copy constructor.
+   * @param[in] exp REXPString to copy data from
+   */
+  REXPString::REXPString(const REXPString &exp):REXPVector(XT_ARRAY_STR, getBytelength(exp.getData())), m_vecData(exp.getData()){
+    if(exp.hasAttributes())
+      REXP::setAttributes(exp.getAttributes());
+  }
+
   /** constructor takes 1 string and puts it into a vector of size 1
    * @param[in] str String to populate m_vecData, REXPString's contents
    * @param[in] consumerNAValue NA representation for strings used by the consumer
@@ -88,6 +96,13 @@ namespace rclient{
     initData(strVec, consumerNAValue);
   }
 
+  /** constructor copies provided vector<RSTRINGTYPE> into its data. Constructor for REXP with attributes
+   * @param[in] strVec vector of strings to copy into m_vecData, REXPString's contents
+   * @param[in] consumerNAValue NA representation for strings used by the consumer
+   */
+  REXPString::REXPString(const RVECTORTYPE<RSTRINGTYPE> &strVec, const RSHARED_PTR<const REXPPairList> &attr, const RSTRINGTYPE &consumerNAValue):REXPVector(attr, XT_ARRAY_STR, getBytelength(strVec)){
+    initData(strVec, consumerNAValue);
+  }
 
   /** Retrieve the size of REXPString's data - vector of strings (m_vecData)
    * @return length of vector m_vecData
@@ -151,7 +166,7 @@ namespace rclient{
    * @param[in] length size of array
    * @return bool indicating if the network data fits in the provided array
    */
-  bool REXPString::toNetworkData(unsigned char *buf, size_t &length) const{
+  bool REXPString::toNetworkData(unsigned char *buf, const size_t &length) const{
     // fill in array with data
     size_t buf_i = 0;
     for(size_t i = 0; i < m_vecData.size(); ++i){

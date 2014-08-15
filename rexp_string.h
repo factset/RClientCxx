@@ -32,8 +32,10 @@ namespace rclient{
   public:
     REXPString();
     ~REXPString();
+    REXPString(const REXPString &exp);
     explicit REXPString(const RSTRINGTYPE &str, const RSTRINGTYPE &consumerNAValue = NA);
     explicit REXPString(const RVECTORTYPE<RSTRINGTYPE> &strVec, const RSTRINGTYPE &consumerNAValue = NA);
+    explicit REXPString(const RVECTORTYPE<RSTRINGTYPE> &strVec, const RSHARED_PTR<const REXPPairList> &attr, const RSTRINGTYPE &consumerNAValue = NA);
 
     virtual const size_t length() const;
     virtual const RVECTORTYPE<RSTRINGTYPE> getData(const RSTRINGTYPE &consumerNAValue = NA) const;
@@ -46,7 +48,7 @@ namespace rclient{
     // for network packet entries
     // don't want consumer to have access to these, but they are needed by rpacket_entry
     // possible use of private + friend here
-    virtual bool toNetworkData(unsigned char *buf, size_t &length) const;
+    virtual bool toNetworkData(unsigned char *buf, const size_t &length) const;
     virtual size_t bytelength() const;
 
   private:

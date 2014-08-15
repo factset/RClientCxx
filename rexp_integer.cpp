@@ -49,6 +49,15 @@ namespace rclient{
    */ 
   REXPInteger::~REXPInteger(){}
 
+
+  /** Copy constructor.
+   * @param[in] exp REXPInteger to copy data from
+   */
+  REXPInteger::REXPInteger(const REXPInteger &exp):REXPVector(XT_ARRAY_INT, exp.getData().size() * sizeof(int32_t)), m_vecData(exp.getData()){
+    if(exp.hasAttributes())
+      REXP::setAttributes(exp.getAttributes());
+  }
+
   /** constructor takes 1 integer and puts it into a vector of size 1
    * @param[in] val int value to populate m_vecData, REXPInteger's contents
    * @param[in] consumerNAValue NA representation for integers used by the consumer
@@ -68,6 +77,16 @@ namespace rclient{
   REXPInteger::REXPInteger(const RVECTORTYPE<int32_t> &vals, const int32_t &consumerNAValue):REXPVector(XT_ARRAY_INT, vals.size()*sizeof(int32_t)){
     initData(vals, consumerNAValue);
   }
+
+  /** constructor copies provided vector<double> into itself. Constructor for REXP with Attributes
+   * @param[in] vals vector<double> to copy into m_vecData, REXPDouble's contents
+   * @param[in] attr pointer to REXPPairList containing this REXP's attributes
+   * @param[in] consumerNAValue NA representation for doubles used by the consumer
+   */
+  REXPInteger::REXPInteger(const RVECTORTYPE<int32_t> &vals, const RSHARED_PTR<const REXPPairList> &attr, const int32_t &consumerNAValue):REXPVector(attr, XT_ARRAY_INT, vals.size()*sizeof(int32_t)){
+    initData(vals, consumerNAValue);
+  }
+
 
   /** Retrieve the size of the m_vecData vector<int32_t>
    * @return length of vector m_vecData
@@ -129,7 +148,7 @@ namespace rclient{
    * @param[in] length size of array
    * @return bool indicating if the network data fits in the provided array
    */
-  bool REXPInteger::toNetworkData(unsigned char *buf, size_t &length) const{
+  bool REXPInteger::toNetworkData(unsigned char *buf, const size_t &length) const{
     EndianConverter converter;
 
     size_t pos = 0;

@@ -23,7 +23,10 @@
 
 namespace rclient{
 
-  /** abstract class representing any R object
+  // forward declarations of PairList for attributes.
+  class REXPPairList;
+
+  /** class representing any R object
    */
   class RCLIENT_API REXP{
 
@@ -66,28 +69,41 @@ namespace rclient{
       XT_TYPE_MASK     = 63,   // Mask to get REXP type without any flags
       XT_LARGE         = 64,   // flag is set, REXP header in rpacket will be 8 bytes
       XT_HAS_ATTR      = 128}; // flag if set, the following REXP is the attribute
+    
 
-  protected:
+  private:
     /* m_eType is stored as an int instead of enum because of the XT_HAS_ATTR and XT_LARGE flags.
        The flags are or'd with the eType for Rserve protocol and we cannot store (XT_TYPE | XT_HAS_ATTR) as an enum.
     */
     uint32_t m_eType; //REXP data type
-  
+
+    RSHARED_PTR<const REXPPairList> m_pAttributes;
+
   public:
-  
+    REXP();
+    REXP(const REXP &exp);
+    explicit REXP(const RSHARED_PTR<const REXPPairList> &attr);
+
+    virtual ~REXP();
+
     uint32_t getType() const;
     uint32_t getBaseType() const;
+    RSTRINGTYPE getTypeName() const;
+
+    bool hasAttributes() const;
+    void setAttributes(RSHARED_PTR<const REXPPairList> attr);
+    RSHARED_PTR<const REXPPairList> getAttributes() const;
+    
 
     // for network packet entries
     // dont want consumer to have access to these, but needed by rpacket_entry
     // possible use of private + friend here
-    virtual bool toNetworkData(unsigned char *buf, size_t &length) const =0;
-    virtual size_t bytelength() const = 0;
+    virtual bool toNetworkData(unsigned char *buf, const size_t &length) const;
+    virtual size_t bytelength() const;
 
-    virtual ~REXP();
-  
   protected:
     explicit REXP(const eType type=XT_S4, const size_t size=0);
+    explicit REXP(const RSHARED_PTR<const REXPPairList> &attr, const eType type, const size_t size = 0);
   };
 } // close namespace
 #endif

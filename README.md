@@ -39,15 +39,18 @@ A makefile is included with RClient.
 Once demo has been built, make sure that there is an RServe to connect to. See http://rforge.net/Rserve/ to set up a server.
 - './demo' will run the demo with default settings: connecting to RServe at 'localhost' on port 6311
 - './demo help' will print the usage for the demo.
-- './demo -h <host>' will run the demo, connecting to <host> at default port 6311
-- './demo -p <port>' will run demo, connecting at port <port>
+- './demo -h host' will run the demo, connecting to <host> at default port 6311
+- './demo -p port' will run demo, connecting at port <port>
+- './demo -l username password' will attempt to login to RServe if authentication is required. Otherwise the username and password are ignored.
 - './demo -s' sets flag to tell server to shutdown instead of calling assign and eval
 - './demo -a' sets flag for RClient to connect to any version of RServe. Otherwise, RClient will only connect to version 0103
 
-Flags '-h', '-p', '-s', and '-a' can be combined.
+Flags '-h', '-p', '-l', '-s', and '-a' can be combined.
 
-- <host> string: either the hostname or IP address of RServe
-- <port> integer: port that RServe is bound to
+- host: string - either the hostname or IP address of RServe
+- port: integer - port that RServe is bound to
+- username: string - valid username for the RServe getting connected to
+- password: string - valid password for corresponding username
 
 If there is not a server listening at the given host and port, RClient will fail with a runtime exception, declaring that it cannot connect.
 
@@ -58,6 +61,7 @@ RClient was written to execute on Unix and VMS. It has not been tested on other 
 If a network error occurs and a runtime_error is thrown, then the connection is closed and the session is lost. Following calls to RClient will attempt to establish a new connection.
 
 Implemented RServe Commands:
+- login
 - assign
 - eval
 - shutdown
@@ -67,5 +71,7 @@ Implemented REXP Types:
 - REXPInteger
 - REXPString
 - REXPNull
+- REXPList
+- REXPPairList
 
 Attributes are not yet implemented.

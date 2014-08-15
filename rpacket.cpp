@@ -15,7 +15,7 @@
  */
 
 #include "rpacket.h"
-
+#include <sstream>
 
 namespace rclient{
 
@@ -68,10 +68,132 @@ namespace rclient{
   }
 
   /** Retrieves status that was set in the response command. Only applicable to packets from server
-   * @return 32bit int corresponding to stat codes. see "rpacket.h" for eStat list
+   * @return String corresponding to stat codes. see "rpacket.h" for eStat list
    */
-  uint32_t RPacket::getStatus() const{
-    return (m_qap1Header.getCommand() >> 24) & 127;
+  RSTRINGTYPE RPacket::getStatus() const{
+    if(isOk())
+      return RSTRINGTYPE("OK");
+
+    int error_code = (m_qap1Header.getCommand() >> 24) & 127;
+
+    std::stringstream msg;
+    // reserved for R errors.
+    if(error_code >= 0 && error_code <= 0x3f){
+      msg << "R encountered error ";
+      msg << "0x" << std::hex << error_code << " while trying to execute function.";
+      return RSTRINGTYPE(msg.str());
+    }
+
+    // RServe errors.
+    msg << "RServe Error ";
+    msg << "0x" << std::hex << error_code << ": ";
+    switch(error_code){
+    case ERR_auth_failed:
+      {
+        msg << "Authentication failed or was not attempted.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_conn_broken:
+      {
+        msg << "Connection closed or a broken packet killed it.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_inv_cmd:
+      {
+        msg << "Unsupported or invalid command.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_inv_par:
+      {
+        msg << "Invalid parameter exists.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_Rerror:
+      {
+        msg << "R-error occured.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_IOerror:
+      {
+        msg << "I/O error.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_notOpen:
+      {
+        msg << "Attempted to read/write a closed file.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_accessDenied:
+      {
+        msg << "RServe does not allow access to specified command.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_unsupportedCmd:
+      {
+        msg << "Unsupported command.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_unknownCmd:
+      {
+        msg << "Unrecognized command.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_data_overflow:
+      {
+        msg << "Incoming Packet is too big.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_object_too_big:
+      {
+        msg << "Requested object is too big to be sent.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_out_of_mem:
+      {
+        msg << "Out of memory.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_ctrl_closed:
+      {
+        msg << "Control pip to master process is closed/broken.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_session_busy:
+      {
+        msg << "Session is still busy.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_detach_failed:
+      {
+        msg << "Unable to detatch session.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_disabled:
+      {
+        msg << "Feature is disabled.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_unavailable:
+      {
+        msg << "Feature is not present in this build.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_cryptError:
+      {
+        msg << "Crypto-system error.";
+        return RSTRINGTYPE(msg.str());
+      }
+    case ERR_securityClose:
+      {
+        msg << "Server initiated close due to security violation.";
+        return RSTRINGTYPE(msg.str());
+      }
+    default:
+      {
+        msg << "An unknown error had occured.";
+        return RSTRINGTYPE(msg.str());
+      }
+    }
   }
 
   /** checks packet cmd to see if command succeeded. Only applicable to packets from server

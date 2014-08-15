@@ -28,6 +28,7 @@ namespace rclient{
 
   protected:
     REXPVector(const eType type=XT_VECTOR, const size_t size=0);
+    REXPVector(const RSHARED_PTR<const REXPPairList> &attr, const eType type=XT_VECTOR, const size_t size=0);
     ~REXPVector();
 
     virtual const size_t length() const = 0; //length of the vector

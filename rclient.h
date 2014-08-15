@@ -41,6 +41,7 @@ namespace rclient{
     RClient& operator=(const RClient&); // non-copyable
     
     /* RServe Commands */
+    bool login(const RSTRINGTYPE &user, const RSTRINGTYPE &pwd); // CMD_login
     bool shutdown(const RSTRINGTYPE &key = ""); // CMD_shutdown
 
     RSHARED_PTR<const REXP> eval(const RSTRINGTYPE &expr);
@@ -53,10 +54,6 @@ namespace rclient{
 
 
     /* Following Rserve Commands not yet implemented on this client
-
-       bool login(const RSTRINGTYPE &user, const RSTRINGTYPE &pwd); // CMD_login
-
-       RSHARED_PTR<const REXP> eval(const REXP &expr);
 
        bool voidEval(const RSTRINGTYPE &expr);
 
@@ -90,13 +87,13 @@ namespace rclient{
 
     // check status of last response
     bool response_isSuccessful() const;
-    uint32_t response_errorStatus() const;
+    RSTRINGTYPE response_errorStatus() const;
 
     // check contents of last response
     size_t response_entryCount() const;
     int response_getType(const size_t pos) const;
     RSTRINGTYPE response_stringAt(const size_t pos) const;
-    RSHARED_PTR<const REXP> response_REXPAt(const size_t pos) const;
+    RSHARED_PTR<const REXP> response_REXPAt(const size_t &pos) const;
 
     const RSTRINGTYPE getRserveVersion();
 

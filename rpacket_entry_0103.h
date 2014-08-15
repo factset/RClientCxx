@@ -66,10 +66,6 @@ namespace rclient{
   private:
     RVECTORTYPE<unsigned char> m_aEntry;
     bool m_isLargeData;
-
-    size_t makeEntryHeader(const size_t i, const uint32_t header_type, const size_t header_length);
-    size_t makeREXPHeader(const size_t i, const uint32_t rexp_type, const size_t rexp_length);
-    void fillWithNUL(size_t i);
   };
 
 } // close namespace

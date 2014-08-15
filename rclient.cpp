@@ -15,6 +15,7 @@
  */
 
 #include "rclient.h"
+#include <unistd.h>
 
 namespace rclient{
 
@@ -26,8 +27,48 @@ namespace rclient{
    */
   RClient::RClient(const RSTRINGTYPE &host, const int port, const bool allowAnyVersion):m_NetMan(host,port, allowAnyVersion){}
 
+
+  /** Obtains authentication key from RServe, salts password, and sends login info.
+   * @param[in] user login username
+   * @param[in] pwd login password
+   * @return TRUE if login was successful or if login is not required.
+   */
+  bool RClient::login(const RSTRINGTYPE &user, const RSTRINGTYPE &pwd){
+ // check if authentication is required
+    if(!m_NetMan.isAuthorizationRequired())
+      return true;
+   
+    RSTRINGTYPE loginfo(user + "\n");
+    
+    if (m_NetMan.hasAuthorizationType("uc")){
+      // authorization with unix crypt
+      const RSTRINGTYPE key = m_NetMan.getKey();
+      loginfo.append(crypt(pwd.c_str(), key.c_str()));
+    }
+    else if (m_NetMan.hasAuthorizationType("pt"))
+      // authorization with plain text
+      loginfo.append(pwd);
+    else
+      // cannot determine authorization type, unable to log in
+      return false;
+
+    // Authentication required
+    RVECTORTYPE<RPacket::PacketEntry> entrylist;
+    entrylist.resize(1);
+    entrylist[0] = RPacket::PacketEntry(loginfo);
+    // make RPacket to be sent
+    RPacket toSend(RPacket::CMD_login, entrylist);
+    // submit packet and receive the response
+
+    RSHARED_PTR<const RPacket> response = m_NetMan.submit(toSend);
+    // store response in RClient
+    m_pLast_response = response;
+    // return whether or not response was successful
+    return response->isOk();
+  }
+
   /** Sends request to server to shut down the server.
-   * @param[in] key session key (!!! need to confirm purpose)
+   * @param[in] key session key
    * @return TRUE if request successful, FALSE if the request failed 
    */
   bool RClient::shutdown(const RSTRINGTYPE &key){
@@ -128,6 +169,8 @@ namespace rclient{
    * @return True if first bit is set in the command, representing a successful request. False otherwise
    */
   bool RClient::response_isSuccessful() const{
+    if(!m_pLast_response) // no response packet yet
+      return false;
     return m_pLast_response->isOk();
   }
 
@@ -135,7 +178,9 @@ namespace rclient{
    * @return eStat corresponding to error type received from the server, or 0 if no error
    * see rpacket.h for list of errors
    */
-  uint32_t RClient::response_errorStatus() const{
+  RSTRINGTYPE RClient::response_errorStatus() const{
+    if(!m_pLast_response) // no response packet yet
+      return RSTRINGTYPE();
     return m_pLast_response->getStatus();
   }
 
@@ -143,6 +188,8 @@ namespace rclient{
    * @return Number of entries in the RPacket most recently received from server
    */
   size_t RClient::response_entryCount() const{
+    if(!m_pLast_response) // no response packet yet
+      return 0;
     return m_pLast_response->getEntries()->size();
   }
 
@@ -152,8 +199,8 @@ namespace rclient{
    * See rpacket_entry.h for list of eDataTypes
    */
   int RClient::response_getType(const size_t pos) const{
-    if(pos >= response_entryCount()){
-      // pos out of bounds
+    if(pos >= response_entryCount() || !m_pLast_response){
+      // pos out of bounds or no response packet yet
       return -1;
     }
     return (*m_pLast_response->getEntries())[pos].getDataType();
@@ -164,8 +211,8 @@ namespace rclient{
    * @return string containing requested packet entry, or empty string if pos is out of bounds or not of type string.
    */
   RSTRINGTYPE RClient::response_stringAt(const size_t pos) const{
-    if(pos >= response_entryCount() || response_getType(pos) != RPacket::PacketEntry::DT_STRING){
-      // pos out of bounds
+    if(pos >= response_entryCount() || response_getType(pos) != RPacket::PacketEntry::DT_STRING || !m_pLast_response){
+      // pos out of bounds or no response packet yet
       return RSTRINGTYPE(); // or throw exception
     }
 
@@ -187,9 +234,9 @@ namespace rclient{
    * @param[in] pos position in vector of RPacketEntries in m_pLast_response
    * @return REXP containing requested packet entry data, or REXPNull if pos is out of bounds or not of type string.
    */
-  RSHARED_PTR<const REXP> RClient::response_REXPAt(const size_t pos) const{
-    if(pos >= response_entryCount()){
-      // pos out of bounds
+  RSHARED_PTR<const REXP> RClient::response_REXPAt(const size_t &pos) const{
+    if(pos >= response_entryCount() || !m_pLast_response){
+      // pos out of bounds or no response packet yet
       return RMAKE_SHARED<REXPNull>(); // does not compile with -o2 and higher
     }
     const RPacket::PacketEntry &entry = (*m_pLast_response->getEntries())[pos];
