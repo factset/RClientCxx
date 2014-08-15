@@ -73,5 +73,3 @@ Implemented REXP Types:
 - REXPNull
 - REXPList
 - REXPPairList
-
-Attributes are not yet implemented.
