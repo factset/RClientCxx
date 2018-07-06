@@ -23,19 +23,6 @@
 
 namespace{
   
-  /** Copies data from the provided entry to the given buffer at position i
-   * @param[out] buf vector of unsigned char to copy entry data to
-   * @param[in] i position in buf to copy data
-   * @param[in] entry RPacketEntry_0103 to copy data from 
-   * @return number of bytes copied
-   */
-  size_t copyMember(RVECTORTYPE<unsigned char> &buf, const size_t i, const rclient::RPacketEntry_0103 &entry){
-    RVECTORTYPE<unsigned char> entry_ch = entry.getEntry();
-    size_t entry_length = entry.getLength();
-    memcpy(&buf[i], &entry_ch[0], entry_length);
-    return entry_length;
-  }
-
   /** Serializes integer into little-endian byte order
    * @param[out] buf To be filled with the little-endian serialized version of val
    * @param[in] val Integer to be serialized
