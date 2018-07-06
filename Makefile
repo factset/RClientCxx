@@ -47,7 +47,7 @@ OBJECTS= $(RCLIENT:.cpp=.o)
 all: $(EXECUTABLE)
 
 $(EXECUTABLE):  $(OBJECTS) $(DEMO)
-	$(CXX) $(LDFLAGS) $(DEMO) $(OBJECTS) -o $@
+	$(CXX) $(DEMO) $(OBJECTS) $(LDFLAGS) -o $@
 
 .PHONY : clean
 clean:
