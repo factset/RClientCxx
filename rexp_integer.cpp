@@ -58,6 +58,14 @@ namespace rclient{
       REXP::setAttributes(exp.getAttributes());
   }
 
+  /** Assignment operator
+   * @param[in] exp REXPInteger to copy data from
+   */
+  REXPInteger& REXPInteger::operator=(REXPInteger exp){
+    exp.swap(*this);
+    return *this;
+  }
+
   /** constructor takes 1 integer and puts it into a vector of size 1
    * @param[in] val int value to populate m_vecData, REXPInteger's contents
    * @param[in] consumerNAValue NA representation for integers used by the consumer
@@ -85,6 +93,14 @@ namespace rclient{
    */
   REXPInteger::REXPInteger(const RVECTORTYPE<int32_t> &vals, const RSHARED_PTR<const REXPPairList> &attr, const int32_t &consumerNAValue):REXPVector(attr, XT_ARRAY_INT, vals.size()*sizeof(int32_t)){
     initData(vals, consumerNAValue);
+  }
+
+  /** swap contents of one instance with another
+   *  @param[in] exp REXPInteger instance to swap with this
+   */
+  void REXPInteger::swap(REXPInteger &exp) {
+    REXP::swap(exp);
+    m_vecData.swap(exp.m_vecData);
   }
 
 

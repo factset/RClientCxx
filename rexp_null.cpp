@@ -31,10 +31,25 @@ namespace rclient{
       REXP::setAttributes(exp.getAttributes());
   }
 
+  /** Assignment operator
+   * @param[in] exp REXPNull to copy data from
+   */
+  REXPNull& REXPNull::operator=(REXPNull exp){
+    exp.swap(*this);
+    return *this;
+  }
+
   /** constructor for REXPNull containing attributes
    * @param[in] attr pointer to REXPPairList containing this REXP's attributes
    */
   REXPNull::REXPNull(const RSHARED_PTR<const REXPPairList> &attr):REXP(attr, XT_NULL){}
+
+  /** swap contents of one instance with another
+   *  @param[in] exp REXPNull instance to swap with this
+   */
+  void REXPNull::swap(REXPNull &exp) {
+    REXP::swap(exp);
+  }
 
   /** fills in provided array with unsigned chars containing R contents to be used by the network
    * since this represents null, there are no contents except for attributes

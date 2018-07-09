@@ -33,9 +33,11 @@ namespace rclient{
     REXPInteger();
     ~REXPInteger();
     REXPInteger(const REXPInteger &exp);
+    REXPInteger& operator=(REXPInteger exp);
     explicit REXPInteger(const int32_t &val, const int32_t &consumerNAValue = NA);
     explicit REXPInteger(const RVECTORTYPE<int32_t> &vals, const int32_t &consumerNAValue = NA);
     REXPInteger(const RVECTORTYPE<int32_t> &vals, const RSHARED_PTR<const REXPPairList> &attr, const int32_t &consumerNAValue = NA);
+    void swap(REXPInteger &exp);
 
     virtual size_t length() const;
     virtual bool isNA(const int32_t &val);

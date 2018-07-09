@@ -35,6 +35,14 @@ namespace rclient{
       REXP::setAttributes(exp.getAttributes());
   }
 
+  /** Assignment operator
+   * @param[in] exp REXP to copy data from
+   */
+  REXP& REXP::operator=(REXP exp){
+    exp.swap(*this);
+    return *this;
+  }
+
   /** public constructor with attributes, sets type to XT_S4. contains no data
    * @param[in] attr REXPPairList containing this REXP's attributes
    */
@@ -66,6 +74,15 @@ namespace rclient{
       m_eType = m_eType | XT_HAS_ATTR;
     }
     if(size > 0x7fffff) m_eType = m_eType | XT_LARGE;
+  }
+
+
+  /** swap contents of one instance with another
+   *  @param[in] exp REXP instance to swap with this
+   */
+  void REXP::swap(REXP &exp) {
+    std::swap(m_eType,exp.m_eType);
+    m_pAttributes.swap(exp.m_pAttributes);
   }
 
 

@@ -33,9 +33,11 @@ namespace rclient{
     REXPString();
     ~REXPString();
     REXPString(const REXPString &exp);
+    REXPString& operator=(REXPString exp);
     explicit REXPString(const RSTRINGTYPE &str, const RSTRINGTYPE &consumerNAValue = NA);
     explicit REXPString(const RVECTORTYPE<RSTRINGTYPE> &strVec, const RSTRINGTYPE &consumerNAValue = NA);
     explicit REXPString(const RVECTORTYPE<RSTRINGTYPE> &strVec, const RSHARED_PTR<const REXPPairList> &attr, const RSTRINGTYPE &consumerNAValue = NA);
+    void swap(REXPString &exp);
 
     virtual size_t length() const;
     virtual RVECTORTYPE<RSTRINGTYPE> getData(const RSTRINGTYPE &consumerNAValue = NA) const;

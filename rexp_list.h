@@ -32,8 +32,10 @@ namespace rclient{
     REXPList();
     ~REXPList();
     REXPList(const REXPList &exp);
+    REXPList& operator=(REXPList exp);
     explicit REXPList(const RVector &content);
     REXPList(const RVector &content, const RSHARED_PTR<const REXPPairList> &attr);
+    void swap(REXPList &exp);
 
     virtual size_t length() const;
     virtual const RVector& getData() const;

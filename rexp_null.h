@@ -27,7 +27,9 @@ namespace rclient{
   public:
     REXPNull();
     REXPNull(const REXPNull &exp);
+    REXPNull& operator=(REXPNull exp);
     explicit REXPNull(const RSHARED_PTR<const REXPPairList> &attr);
+    void swap(REXPNull &exp);
 
     // for network packet entries
     virtual bool toNetworkData(unsigned char *buf, const size_t &length) const;

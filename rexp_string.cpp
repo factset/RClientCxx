@@ -76,6 +76,14 @@ namespace rclient{
       REXP::setAttributes(exp.getAttributes());
   }
 
+  /** Assignment operator
+   * @param[in] exp REXPString to copy data from
+   */
+  REXPString& REXPString::operator=(REXPString exp){
+    exp.swap(*this);
+    return *this;
+  }
+
   /** constructor takes 1 string and puts it into a vector of size 1
    * @param[in] str String to populate m_vecData, REXPString's contents
    * @param[in] consumerNAValue NA representation for strings used by the consumer
@@ -102,6 +110,14 @@ namespace rclient{
    */
   REXPString::REXPString(const RVECTORTYPE<RSTRINGTYPE> &strVec, const RSHARED_PTR<const REXPPairList> &attr, const RSTRINGTYPE &consumerNAValue):REXPVector(attr, XT_ARRAY_STR, getBytelength(strVec)){
     initData(strVec, consumerNAValue);
+  }
+
+  /** swap contents of one instance with another
+   *  @param[in] exp REXPString instance to swap with this
+   */
+  void REXPString::swap(REXPString &exp) {
+    REXP::swap(exp);
+    m_vecData.swap(exp.m_vecData);
   }
 
   /** Retrieve the size of REXPString's data - vector of strings (m_vecData)

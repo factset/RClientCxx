@@ -82,7 +82,9 @@ namespace rclient{
   public:
     REXP();
     REXP(const REXP &exp);
+    REXP& operator=(REXP exp);
     explicit REXP(const RSHARED_PTR<const REXPPairList> &attr);
+    void swap(REXP &exp);
 
     virtual ~REXP();
 
