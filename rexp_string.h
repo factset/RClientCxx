@@ -37,8 +37,8 @@ namespace rclient{
     explicit REXPString(const RVECTORTYPE<RSTRINGTYPE> &strVec, const RSTRINGTYPE &consumerNAValue = NA);
     explicit REXPString(const RVECTORTYPE<RSTRINGTYPE> &strVec, const RSHARED_PTR<const REXPPairList> &attr, const RSTRINGTYPE &consumerNAValue = NA);
 
-    virtual const size_t length() const;
-    virtual const RVECTORTYPE<RSTRINGTYPE> getData(const RSTRINGTYPE &consumerNAValue = NA) const;
+    virtual size_t length() const;
+    virtual RVECTORTYPE<RSTRINGTYPE> getData(const RSTRINGTYPE &consumerNAValue = NA) const;
     virtual void fillData(RVECTORTYPE<RSTRINGTYPE> &buf, const RSTRINGTYPE &consumerNAValue = NA) const;
 
     virtual bool isNA(const RSTRINGTYPE &str);

@@ -153,7 +153,7 @@ namespace rclient{
   /** Retrieve the size of the m_vecData vector<double>
    * @return length of vector m_vecData
    */
-  const size_t REXPDouble::length() const{
+  size_t REXPDouble::length() const{
     return m_vecData.size();
   }
 
@@ -162,7 +162,7 @@ namespace rclient{
    * @param[in] consumerNAValue NA representation for doubles used by the consumer
    * @return const vector<double> m_vecData
    */
-  const RVECTORTYPE<double> REXPDouble::getData(const double &consumerNAValue) const{
+  RVECTORTYPE<double> REXPDouble::getData(const double &consumerNAValue) const{
     RVECTORTYPE<double> retval;
     retval.reserve(m_vecData.size());
     for(size_t i = 0; i < m_vecData.size(); ++i){

@@ -35,7 +35,7 @@ namespace rclient{
     explicit REXPList(const RVector &content);
     REXPList(const RVector &content, const RSHARED_PTR<const REXPPairList> &attr);
 
-    virtual const size_t length() const;
+    virtual size_t length() const;
     virtual const RVector& getData() const;
 
     // for network packet entries

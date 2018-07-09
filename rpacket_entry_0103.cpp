@@ -445,21 +445,21 @@ namespace rclient{
   /** retrieves number of bytes in the entry, including headers
    * @return number of bytes in the RPacketEntry data, including headers
    */
-  const uint32_t RPacketEntry_0103::getLength() const{
+  uint32_t RPacketEntry_0103::getLength() const{
     return m_aEntry.size();
   }
 
   /** retrieves eDataType value of the entry, see RPacketEntry class for corresponding enums
    * @return eDataType enum corresponding to entry data type
    */
-  const uint32_t RPacketEntry_0103::getDataType() const{
+  uint32_t RPacketEntry_0103::getDataType() const{
     return m_aEntry[0];
   }
 
   /** Retrieves size of the entry header.
    * @return number of bytes in the entry header. 8 if the entry contains large data, otherwise 4
    */
-  const uint32_t RPacketEntry_0103::getHeaderLength() const{
+  uint32_t RPacketEntry_0103::getHeaderLength() const{
     return (m_isLargeData ? 8:4);
   }
 

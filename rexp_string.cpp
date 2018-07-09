@@ -107,7 +107,7 @@ namespace rclient{
   /** Retrieve the size of REXPString's data - vector of strings (m_vecData)
    * @return length of vector m_vecData
    */
-  const size_t REXPString::length() const{
+  size_t REXPString::length() const{
     return m_vecData.size();
   }
 
@@ -116,7 +116,7 @@ namespace rclient{
    * @param[in] consumerNAValue NA representation for strings used by the consumer
    * @return vector of strings, m_vecData
    */
-  const RVECTORTYPE<RSTRINGTYPE> REXPString::getData(const RSTRINGTYPE &consumerNAValue) const{
+  RVECTORTYPE<RSTRINGTYPE> REXPString::getData(const RSTRINGTYPE &consumerNAValue) const{
     RVECTORTYPE<RSTRINGTYPE> retval;
     retval.reserve(m_vecData.size());
     for(size_t i = 0; i < m_vecData.size(); ++i){

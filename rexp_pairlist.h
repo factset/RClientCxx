@@ -37,7 +37,7 @@ namespace rclient{
     explicit REXPPairList(const RPairVector &content);
     REXPPairList(const RPairVector &content, const RSHARED_PTR<const REXPPairList> &attr);
 
-    virtual const size_t length() const;
+    virtual size_t length() const;
     virtual const RPairVector& getData() const;
 
     virtual RSHARED_PTR<const REXP> getMember(const RSTRINGTYPE &name) const;

@@ -256,7 +256,7 @@ namespace rclient{
    * If the client is not connected yet, then it will connect to retrieve Authentication type
    * @return True if authentication is required, False otherwise
    */
-  const bool NetworkManager::isAuthorizationRequired(){
+  bool NetworkManager::isAuthorizationRequired(){
     if(m_iSock < 0){
       // if not connected, try to establish connection
       connect_to_rserve();
@@ -277,7 +277,7 @@ namespace rclient{
    * @param[in] has_type 2-character string for which authentication type is supported. "uc" for crypt. "pt" for plain text
    * @return True if the provided authentication type is supported. False otherwise.
    */
-  const bool NetworkManager::hasAuthorizationType(const RSTRINGTYPE &has_type){
+  bool NetworkManager::hasAuthorizationType(const RSTRINGTYPE &has_type){
     if(m_iSock < 0){
       // if not connected, try to establish connection
       connect_to_rserve();
@@ -300,7 +300,7 @@ namespace rclient{
    * If the client is not connected yet, then it will connect to retrieve key
    * @return String representing authentication key
    */
-  const RSTRINGTYPE NetworkManager::getKey(){
+  RSTRINGTYPE NetworkManager::getKey(){
     if(m_iSock < 0){
       // if not connected, try to establish connection
       connect_to_rserve();

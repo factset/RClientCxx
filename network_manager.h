@@ -36,9 +36,9 @@ namespace rclient{
     ~NetworkManager(); // make sure disconnected when destroyed
 
     const RSTRINGTYPE& getVersion();
-    const bool isAuthorizationRequired();
-    const bool hasAuthorizationType(const RSTRINGTYPE &has_type);
-    const RSTRINGTYPE getKey();
+    bool isAuthorizationRequired();
+    bool hasAuthorizationType(const RSTRINGTYPE &has_type);
+    RSTRINGTYPE getKey();
     RSHARED_PTR<const RPacket> submit(RPacket &packet);
   
   private:

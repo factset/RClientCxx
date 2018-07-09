@@ -72,7 +72,7 @@ namespace rclient{
   /** Returns the number of members of the REXPList
    * @return number of elements in the REXPList
    */
-  const size_t REXPList::length() const{
+  size_t REXPList::length() const{
     return m_vecData.size();
   }
 

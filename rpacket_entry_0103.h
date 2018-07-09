@@ -56,9 +56,9 @@ namespace rclient{
 
     // getters
     const RVECTORTYPE<unsigned char> & getEntry() const;
-    const uint32_t getLength() const;
-    const uint32_t getDataType() const;
-    const uint32_t getHeaderLength() const;
+    uint32_t getLength() const;
+    uint32_t getDataType() const;
+    uint32_t getHeaderLength() const;
 
     // Treat contents as REXP...
     RSHARED_PTR<const REXP> toREXP() const;

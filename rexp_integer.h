@@ -37,10 +37,10 @@ namespace rclient{
     explicit REXPInteger(const RVECTORTYPE<int32_t> &vals, const int32_t &consumerNAValue = NA);
     REXPInteger(const RVECTORTYPE<int32_t> &vals, const RSHARED_PTR<const REXPPairList> &attr, const int32_t &consumerNAValue = NA);
 
-    virtual const size_t length() const;
+    virtual size_t length() const;
     virtual bool isNA(const int32_t &val);
     virtual int32_t getNARepresentation() const;
-    virtual const RVECTORTYPE<int32_t> getData(const int32_t &consumerNAValue = NA) const;
+    virtual RVECTORTYPE<int32_t> getData(const int32_t &consumerNAValue = NA) const;
     virtual void fillData(RVECTORTYPE<int32_t> &buf, const int32_t &consumerNAValue = NA) const;
 
     // for network packet entries

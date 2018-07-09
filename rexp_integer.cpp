@@ -91,7 +91,7 @@ namespace rclient{
   /** Retrieve the size of the m_vecData vector<int32_t>
    * @return length of vector m_vecData
    */
-  const size_t REXPInteger::length() const{
+  size_t REXPInteger::length() const{
     return m_vecData.size();
   }
 
@@ -100,7 +100,7 @@ namespace rclient{
    * @param[in] consumerNAValue NA representation for integers used by the consumer
    * @return const vector<int32_t> m_vecData
    */
-  const RVECTORTYPE<int32_t> REXPInteger::getData(const int32_t &consumerNAValue) const{
+  RVECTORTYPE<int32_t> REXPInteger::getData(const int32_t &consumerNAValue) const{
     RVECTORTYPE<int32_t> retval;
     retval.reserve(m_vecData.size());
     for(size_t i = 0; i < m_vecData.size(); ++i){

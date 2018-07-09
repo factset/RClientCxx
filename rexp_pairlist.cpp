@@ -77,7 +77,7 @@ namespace rclient{
   /** Returns the number of members of the REXPPairList
    * @return number of elements in the REXPPairList
    */
-  const size_t REXPPairList::length() const{
+  size_t REXPPairList::length() const{
     return m_vecData.size();
   }
 
