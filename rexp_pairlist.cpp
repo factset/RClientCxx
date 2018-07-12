@@ -58,6 +58,14 @@ namespace rclient{
       REXP::setAttributes(exp.getAttributes());
   }
 
+  /** Assignment operator
+   * @param[in] exp REXPPairList to copy data from
+   */
+  REXPPairList& REXPPairList::operator=(REXPPairList exp){
+    exp.swap(*this);
+    return *this;
+  }
+
   /** constructor fills data field with provided vector and sets R type
    * @param[in] content Vector of <string (name), boost::share_ptr<REXP> > pairs
    */
@@ -74,10 +82,18 @@ namespace rclient{
    */
   REXPPairList::~REXPPairList(){}
 
+  /** swap contents of one instance with another
+   *  @param[in] exp REXPPairList instance to swap with this
+   */
+  void REXPPairList::swap(REXPPairList &exp) {
+    REXP::swap(exp);
+    m_vecData.swap(exp.m_vecData);
+  }
+
   /** Returns the number of members of the REXPPairList
    * @return number of elements in the REXPPairList
    */
-  const size_t REXPPairList::length() const{
+  size_t REXPPairList::length() const{
     return m_vecData.size();
   }
 

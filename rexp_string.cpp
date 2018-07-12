@@ -76,6 +76,14 @@ namespace rclient{
       REXP::setAttributes(exp.getAttributes());
   }
 
+  /** Assignment operator
+   * @param[in] exp REXPString to copy data from
+   */
+  REXPString& REXPString::operator=(REXPString exp){
+    exp.swap(*this);
+    return *this;
+  }
+
   /** constructor takes 1 string and puts it into a vector of size 1
    * @param[in] str String to populate m_vecData, REXPString's contents
    * @param[in] consumerNAValue NA representation for strings used by the consumer
@@ -104,10 +112,18 @@ namespace rclient{
     initData(strVec, consumerNAValue);
   }
 
+  /** swap contents of one instance with another
+   *  @param[in] exp REXPString instance to swap with this
+   */
+  void REXPString::swap(REXPString &exp) {
+    REXP::swap(exp);
+    m_vecData.swap(exp.m_vecData);
+  }
+
   /** Retrieve the size of REXPString's data - vector of strings (m_vecData)
    * @return length of vector m_vecData
    */
-  const size_t REXPString::length() const{
+  size_t REXPString::length() const{
     return m_vecData.size();
   }
 
@@ -116,7 +132,7 @@ namespace rclient{
    * @param[in] consumerNAValue NA representation for strings used by the consumer
    * @return vector of strings, m_vecData
    */
-  const RVECTORTYPE<RSTRINGTYPE> REXPString::getData(const RSTRINGTYPE &consumerNAValue) const{
+  RVECTORTYPE<RSTRINGTYPE> REXPString::getData(const RSTRINGTYPE &consumerNAValue) const{
     RVECTORTYPE<RSTRINGTYPE> retval;
     retval.reserve(m_vecData.size());
     for(size_t i = 0; i < m_vecData.size(); ++i){

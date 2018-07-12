@@ -33,17 +33,19 @@ namespace rclient{
     REXPDouble();
     ~REXPDouble();
     REXPDouble(const REXPDouble &exp);
+    REXPDouble& operator=(REXPDouble exp);
     explicit REXPDouble(const double &val, const double &consumerNAValue = NA);
     explicit REXPDouble(const RVECTORTYPE<double> &vals, const double &consumerNAValue = NA);
     explicit REXPDouble(const RVECTORTYPE<float> &vals, const double &consumerNAValue = NA);
+    void swap(REXPDouble &exp);
 
     REXPDouble(const RVECTORTYPE<double> &vals, const RSHARED_PTR<const REXPPairList> &attr, const double &consumerNAValue = NA);
     REXPDouble(const RVECTORTYPE<float> &vals, const RSHARED_PTR<const REXPPairList> &attr, const double &consumerNAValue = NA);
 
-    virtual const size_t length() const;
+    virtual size_t length() const;
     virtual bool isNA(const double &val);
     virtual double getNARepresentation() const;
-    virtual const RVECTORTYPE<double> getData(const double &consumerNAValue = NA) const;
+    virtual RVECTORTYPE<double> getData(const double &consumerNAValue = NA) const;
     virtual void fillData(RVECTORTYPE<double> &buf, const double &consumerNAValue = NA) const;
 
     // for network packet entries

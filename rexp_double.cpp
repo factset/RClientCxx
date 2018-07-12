@@ -102,6 +102,14 @@ namespace rclient{
       REXP::setAttributes(exp.getAttributes());
   }
 
+  /** Assignment operator
+   * @param[in] exp REXPDouble to copy data from
+   */
+  REXPDouble& REXPDouble::operator=(REXPDouble exp){
+    exp.swap(*this);
+    return *this;
+  }
+
   /** constructor takes 1 double and puts it into a vector of size 1
    * @param[in] val double value to populate m_vecData, REXPDouble's contents
    * @param[in] consumerNAValue NA representation for doubles used by the consumer
@@ -149,11 +157,19 @@ namespace rclient{
     initData(vals, consumerNAValue);
   }
 
+  /** swap contents of one instance with another
+   *  @param[in] exp REXPDouble instance to swap with this
+   */
+  void REXPDouble::swap(REXPDouble &exp) {
+    REXP::swap(exp);
+    m_vecData.swap(exp.m_vecData);
+  }
+
 
   /** Retrieve the size of the m_vecData vector<double>
    * @return length of vector m_vecData
    */
-  const size_t REXPDouble::length() const{
+  size_t REXPDouble::length() const{
     return m_vecData.size();
   }
 
@@ -162,14 +178,14 @@ namespace rclient{
    * @param[in] consumerNAValue NA representation for doubles used by the consumer
    * @return const vector<double> m_vecData
    */
-  const RVECTORTYPE<double> REXPDouble::getData(const double &consumerNAValue) const{
+  RVECTORTYPE<double> REXPDouble::getData(const double &consumerNAValue) const{
     RVECTORTYPE<double> retval;
     retval.reserve(m_vecData.size());
     for(size_t i = 0; i < m_vecData.size(); ++i){
       if(isRserve_NA(m_vecData[i]))
-	retval.push_back(consumerNAValue);
+        retval.push_back(consumerNAValue);
       else
-	retval.push_back(m_vecData[i]);
+        retval.push_back(m_vecData[i]);
     }
     return retval;
   }
@@ -182,9 +198,9 @@ namespace rclient{
     buf.resize(m_vecData.size());
     for(size_t i = 0; i < m_vecData.size(); ++i){
       if(isRserve_NA(m_vecData[i]))
-	buf[i] = consumerNAValue;
+        buf[i] = consumerNAValue;
       else
-	buf[i] = m_vecData[i];
+        buf[i] = m_vecData[i];
     }
   }
 

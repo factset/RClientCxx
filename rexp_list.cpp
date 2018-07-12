@@ -52,6 +52,14 @@ namespace rclient{
       REXP::setAttributes(exp.getAttributes());
   }
 
+  /** Assignment operator
+   * @param[in] exp REXPList to copy data from
+   */
+  REXPList& REXPList::operator=(REXPList exp){
+    exp.swap(*this);
+    return *this;
+  }
+
   /** Constructor fills data field with provided vector and sets R type
    * @param[in] content Vector of shared_ptr<REXP>
    */
@@ -68,11 +76,19 @@ namespace rclient{
    */
   REXPList::~REXPList(){}
 
+  /** swap contents of one instance with another
+   *  @param[in] exp REXPDouble instance to swap with this
+   */
+  void REXPList::swap(REXPList &exp) {
+    REXP::swap(exp);
+    m_vecData.swap(exp.m_vecData);
+  }
+
 
   /** Returns the number of members of the REXPList
    * @return number of elements in the REXPList
    */
-  const size_t REXPList::length() const{
+  size_t REXPList::length() const{
     return m_vecData.size();
   }
 

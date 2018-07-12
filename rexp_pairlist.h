@@ -34,10 +34,12 @@ namespace rclient{
     REXPPairList();
     ~REXPPairList();
     REXPPairList(const REXPPairList &exp);
+    REXPPairList& operator=(REXPPairList exp);
     explicit REXPPairList(const RPairVector &content);
     REXPPairList(const RPairVector &content, const RSHARED_PTR<const REXPPairList> &attr);
+    void swap(REXPPairList &exp);
 
-    virtual const size_t length() const;
+    virtual size_t length() const;
     virtual const RPairVector& getData() const;
 
     virtual RSHARED_PTR<const REXP> getMember(const RSTRINGTYPE &name) const;
