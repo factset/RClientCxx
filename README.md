@@ -13,12 +13,12 @@
    limitations under the License.
 
 
-# C++ RClient#
+# C++ RClient #
 
 C++ client for communication with RServe
 Information pertaining to RServe and existing RServe clients can be found at http://rforge.net/Rserve/
 
-###Prerequisites###
+### Prerequisites ###
 
 RClient uses the boost library (v1.41) for shared pointers.
 The boost library can be downloaded at http://www.boost.org/users/download/.
@@ -27,14 +27,14 @@ Boost Shared Pointers can be replaced with std shared pointers in C++11 by chang
 
 RClient's EndianConverter uses boost/detail/endian.hpp. This file has been included with RClient in the event that the consumer opts not to use the boost library.
 
-###Building the demo###
+### Building the demo ###
 
 A makefile is included with RClient.
 - 'make' will build RClient
 - 'make DEBUG=1' will build RClient with optimization -O0 and the -g flag set
 - 'make clean' will remove the executable and .o files
 
-###Running the demo###
+### Running the demo ###
 
 Once demo has been built, make sure that there is an RServe to connect to. See http://rforge.net/Rserve/ to set up a server.
 - './demo' will run the demo with default settings: connecting to RServe at 'localhost' on port 6311
@@ -54,9 +54,9 @@ Flags '-h', '-p', '-l', '-s', and '-a' can be combined.
 
 If there is not a server listening at the given host and port, RClient will fail with a runtime exception, declaring that it cannot connect.
 
-###Additional Information###
+### Additional Information ###
 
-RClient was written to execute on Unix and VMS. It has not been tested on other systems and behavior is unknown.
+RClient was written to execute on Linux and VMS. It has not been tested on other systems and behavior is unknown.
 
 If a network error occurs and a runtime_error is thrown, then the connection is closed and the session is lost. Following calls to RClient will attempt to establish a new connection.
 
